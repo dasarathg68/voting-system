@@ -41,7 +41,9 @@ contract Voting {
     function vote(string memory candidate, address voter) public {
         require(isValidCandidate(candidate));
         require(voters[voter].isEligible);
+        require(voters[voter].isVoted == false);
         votes[candidate] += 1;
+        voters[voter].isVoted = true;
     }
     function getCandidateList() public view returns (string[] memory){
 	return candidates;

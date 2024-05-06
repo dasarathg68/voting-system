@@ -23,9 +23,9 @@ async function main() {
     // Get list of candidates
     const candidates = await votingContract.getCandidateList();
     console.log("List of Candidates:", candidates);
-    await votingContract.addNewCandidate("Malaika");
-    const newCandidates = await votingContract.getCandidateList();
-    console.log(newCandidates);
+    // await votingContract.addNewCandidate("Malaika");
+    // const newCandidates = await votingContract.getCandidateList();
+    // console.log(newCandidates);
     // Check if "Johnny" is a valid candidate
     const johnnyIsValid = await votingContract.isValidCandidate("Johnny");
     if (!johnnyIsValid) {
@@ -42,7 +42,7 @@ async function main() {
     console.log("Updating vote count...");
     const tx = await votingContract.vote(
       "Johnny",
-      "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
+      "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2"
     );
     await tx.wait();
     console.log("Vote count updated.");

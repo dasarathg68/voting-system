@@ -37,8 +37,8 @@
       ]
     },
     "/Users/dasarathg/Globe&Citizen/voting-system/contract/contracts/Voting.sol": {
-      "lastModificationDate": 1714972722810,
-      "contentHash": "bc9cce5ca9ad5af4343f1f4b6792c602",
+      "lastModificationDate": 1714973319023,
+      "contentHash": "fa5f056272f04d8f5992a23502a3a34e",
       "sourceName": "contracts/Voting.sol",
       "solcConfig": {
         "version": "0.8.0",
