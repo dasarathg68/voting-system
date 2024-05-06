@@ -31,13 +31,13 @@
           </li>
         </ul>
       </div>
-      <button class="btn btn-ghost btn-circle">
+      <button class="btn btn-ghost btn-circle" v-if="$route.path != '/login'">
         <div class="indicator">
           <IconBell />
           <span class="badge badge-xs badge-primary indicator-item"></span>
         </div>
       </button>
-      <div class="dropdown dropdown-end">
+      <div class="dropdown dropdown-end" v-if="$route.path != '/login'">
         <IconAvatar />
         <ul
           tabindex="0"
