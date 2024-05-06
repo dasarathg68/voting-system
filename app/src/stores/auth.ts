@@ -6,13 +6,15 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut
+  signOut,
+  sendPasswordResetEmail
 } from 'firebase/auth'
 import router from '@/router'
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => {
     return {
+      isAuthenticated: false,
       user: {}
     }
   },
@@ -34,6 +36,7 @@ export const useAuthStore = defineStore({
         const user = await signInWithPopup(auth, provider)
         if (user) {
           console.log('User logged in')
+          this.isAuthenticated = true
           console.log(getAdditionalUserInfo(user))
           router.push('/ballots')
         }
@@ -46,6 +49,7 @@ export const useAuthStore = defineStore({
         const user = await signInWithEmailAndPassword(auth, email, password)
         if (user) {
           console.log('User logged in')
+          this.isAuthenticated = true
           router.push('/ballots')
         }
       } catch (error) {
@@ -55,8 +59,17 @@ export const useAuthStore = defineStore({
     async logout() {
       try {
         await signOut(auth)
+        this.isAuthenticated = false
         router.push('/login')
         console.log('User logged out')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async forgotPassword(email: string) {
+      try {
+        await sendPasswordResetEmail(auth, email)
+        console.log('Password reset email sent')
       } catch (error) {
         console.log(error)
       }

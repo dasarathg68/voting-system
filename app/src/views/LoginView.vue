@@ -37,7 +37,13 @@
             placeholder="Password"
             required
           />
-          <div class="flex justify-center pb-3">
+          <div
+            class="flex mt-2 text-sm cursor-pointer align-center justify-end w-full"
+            @click="toggleForgotPasswordModal"
+          >
+            Forgot Password?
+          </div>
+          <div class="flex justify-center pb-3 w-full">
             <button class="btn btn-primary w-auto mt-4" type="submit">Login</button>
           </div>
         </form>
@@ -72,20 +78,30 @@
       </div>
     </div>
   </div>
+  <ForgotPasswordModal
+    :show="showForgotPasswordModal"
+    @toggleForgotPasswordModal="toggleForgotPasswordModal"
+    @sendResetEmail="(email) => sendResetEmail(email)"
+  />
 </template>
 
 <script setup>
 import { useAuthStore } from '@/stores/auth'
 import IconGoogle from '@/components/icons/IconGoogle.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 const authStore = useAuthStore()
 
+const showForgotPasswordModal = ref(false)
 const activeTab = ref('login') // Set initial tab to login
 const email = ref('')
 const password = ref('')
 const registerEmail = ref('')
 const registerPassword = ref('')
 
+const toggleForgotPasswordModal = () => {
+  showForgotPasswordModal.value = !showForgotPasswordModal.value
+}
 const login = async () => {
   await authStore.loginWithEmail(email.value, password.value)
 }
@@ -95,5 +111,10 @@ const register = async () => {
 }
 const googleLogin = async () => {
   await authStore.loginWithGoogle()
+}
+const sendResetEmail = async (email) => {
+  console.log(email)
+  await authStore.forgotPassword(email)
+  toggleForgotPasswordModal()
 }
 </script>
