@@ -7,10 +7,7 @@ async function main() {
     "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
   ];
 
-  const Voting = await VotingContractFactory.deploy(
-    listOfCandidates,
-    listOfVoters
-  );
+  const Voting = await VotingContractFactory.deploy();
   console.log("Contract deployed to address:", Voting.address);
 }
 

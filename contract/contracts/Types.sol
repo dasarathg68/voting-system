@@ -7,8 +7,15 @@ library  Types {
         bool isEligible;
     }
    struct Candidate{
+        string name;        
+    }
+     struct Ballot {
+        address owner;
         string name;
-        uint256 voteCount;
-        
+        string[] candidates;
+        uint256 startTime;
+        uint256 endTime;
+        mapping(string => uint256) votes;
+        mapping(address => Voter) voters;
     }
 }
