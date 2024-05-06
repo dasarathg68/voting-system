@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.0;
-
+import "./Types.sol";
 contract Voting {
     // Mapping from candidate name to vote count
-    struct Voter{
-        bool isVoted;
-        bool isEligible;
-    }
+    
     string[] public candidates;
-    mapping(address => Voter) public voters;
+    mapping(address => Types.Voter) public voters;
+    
     mapping(string => uint256) public votes;
 
     constructor(string[] memory candidatesList, address[] memory votersList) {
@@ -17,7 +15,7 @@ contract Voting {
             votes[candidatesList[i]] = 0;
         }
         for(uint i = 0; i < votersList.length; i++) {
-            voters[votersList[i]] = Voter(false, true);
+            voters[votersList[i]] = Types.Voter(false, true);
         }
     }
     function addNewCandidate(string memory candidate) public {

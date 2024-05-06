@@ -37,9 +37,46 @@
       ]
     },
     "/Users/dasarathg/Globe&Citizen/voting-system/contract/contracts/Voting.sol": {
-      "lastModificationDate": 1714973319023,
-      "contentHash": "fa5f056272f04d8f5992a23502a3a34e",
+      "lastModificationDate": 1714983368883,
+      "contentHash": "6607b6ce52c08d2172c805d3e00213ef",
       "sourceName": "contracts/Voting.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Types.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Voting"
+      ]
+    },
+    "/Users/dasarathg/Globe&Citizen/voting-system/contract/contracts/Types.sol": {
+      "lastModificationDate": 1714983380828,
+      "contentHash": "6ae4564cf78cc6205f8168fc0340c32a",
+      "sourceName": "contracts/Types.sol",
       "solcConfig": {
         "version": "0.8.0",
         "settings": {
@@ -68,7 +105,7 @@
         "^0.8.0"
       ],
       "artifacts": [
-        "Voting"
+        "Types"
       ]
     }
   }
