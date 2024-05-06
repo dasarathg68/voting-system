@@ -2,10 +2,12 @@
   <!-- <header> -->
   <div class="navbar bg-base-100 rounded-lg w-full shadow-lg z-50 fixed">
     <div class="navbar-start">
-      <div class="cursor-pointer btn-ghost" @click="navigateToLink('ballots')">e-Voting Portal</div>
+      <div class="cursor-pointer btn-ghost text-lg" @click="navigateToLink('ballots')">
+        e-Voting Portal
+      </div>
     </div>
     <div class="navbar-end">
-      <div class="dropdown cursor-pointer">
+      <div class="dropdown cursor-pointer btn-ghost">
         <div tabindex="0">
           Themes
           <span class="badge text-xs bg-blue-300">New</span>
