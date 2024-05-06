@@ -38,8 +38,12 @@ async function main() {
     console.log("Total votes for Johnny:", votes.toNumber());
 
     // Update the vote count for "Johnny"
+
     console.log("Updating vote count...");
-    const tx = await votingContract.vote("Johnny");
+    const tx = await votingContract.vote(
+      "Johnny",
+      "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
+    );
     await tx.wait();
     console.log("Vote count updated.");
   } catch (error) {
