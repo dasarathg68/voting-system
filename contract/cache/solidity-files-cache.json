@@ -6,7 +6,7 @@
       "contentHash": "78e7695a02a8831ee64f2209b9aedaec",
       "sourceName": "contracts/HelloWorld.sol",
       "solcConfig": {
-        "version": "0.7.3",
+        "version": "0.8.0",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -34,6 +34,41 @@
       ],
       "artifacts": [
         "HelloWorld"
+      ]
+    },
+    "/Users/dasarathg/Globe&Citizen/voting-system/contract/contracts/Voting.sol": {
+      "lastModificationDate": 1714971962696,
+      "contentHash": "14f20d0d801093ebf0b139fad21c3f7c",
+      "sourceName": "contracts/Voting.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Voting"
       ]
     }
   }
