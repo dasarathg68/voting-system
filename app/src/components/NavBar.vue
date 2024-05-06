@@ -10,7 +10,7 @@
       <div className="dropdown cursor-pointer">
         <div tabindex="0">
           Themes
-          <span class="badge text-xs bg-blue-300">New</span>
+          <span class="badge text-xs bg-blue-300">Try!</span>
         </div>
 
         <ul
