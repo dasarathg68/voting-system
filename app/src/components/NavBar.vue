@@ -50,7 +50,7 @@
             </a>
           </li>
           <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
+          <li><a @click="emits('logout')">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -65,7 +65,7 @@ import IconAvatar from '@/components/icons/IconAvatar.vue'
 defineProps<{
   themesAvailable: string[]
 }>()
-const emits = defineEmits(['themeChanged'])
+const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()
 
 function navigateToLink(id: string) {

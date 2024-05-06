@@ -4,6 +4,7 @@ import NavBar from '@/components/NavBar.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import { useThemeStore } from '@/stores/themes'
 import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/auth'
 
 const { currentTheme } = storeToRefs(useThemeStore())
 </script>
@@ -17,6 +18,7 @@ const { currentTheme } = storeToRefs(useThemeStore())
           useThemeStore().setTheme(newTheme)
         }
       "
+      @logout="useAuthStore().logout()"
     />
     <RouterView />
     <TheFooter />
