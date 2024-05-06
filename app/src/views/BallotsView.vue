@@ -3,8 +3,8 @@
     <div class="text-xl">Ballots</div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
       <CreateBallotCard
-        :showCreateBallotModal="showCreateBallotModal"
-        @toggleCreateBallotModal="showCreateBallotModal = !showCreateBallotModal"
+        :showCreateBallotModal="isCreateBallotModal"
+        @toggleCreateBallotModal="toggleCreateBallotModal"
       />
     </div>
   </div>
@@ -12,8 +12,7 @@
 
 <script setup lang="ts">
 import CreateBallotCard from '@/components/CreateBallotCard.vue'
+import { useCreateBallotModal } from '@/composables/useCreateBallotModal'
 
-import { ref } from 'vue'
-
-const showCreateBallotModal = ref<boolean>(false)
+const { isOpen: isCreateBallotModal, toggleModal: toggleCreateBallotModal } = useCreateBallotModal()
 </script>

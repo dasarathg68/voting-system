@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="navbar-end">
-      <div class="dropdown cursor-pointer btn-ghost">
+      <div className="dropdown cursor-pointer">
         <div tabindex="0">
           Themes
           <span class="badge text-xs bg-blue-300">New</span>
@@ -15,7 +15,7 @@
 
         <ul
           tabindex="0"
-          class="menu menu-sm dropdown-content z-[1] bg-base-100 rounded-box border-black w-32 mt-8"
+          class="menu menu-sm dropdown-content z-[1] bg-base-100 rounded-box border-transparent bg-[rgba(0,0,0,0.2)] w-32 mt-8"
         >
           <li v-for="theme in themesAvailable" :key="theme">
             <div
@@ -41,7 +41,7 @@
         <IconAvatar />
         <ul
           tabindex="0"
-          class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52"
+          class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
         >
           <li>
             <a class="justify-between">
