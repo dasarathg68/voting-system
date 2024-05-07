@@ -7,6 +7,9 @@
       </div>
     </div>
     <div class="navbar-end">
+      <div>
+        <button class="btn btn-primary" @click="siwe">SIWE</button>
+      </div>
       <div className="dropdown cursor-pointer">
         <div tabindex="0">
           Themes
@@ -38,7 +41,7 @@
         </div>
       </button>
       <div class="dropdown dropdown-end" v-if="$route.path != '/login'">
-        <IconAvatar />
+        <IconAvatar :imgsrc="user && user.photoURL ? user.photoURL : null" />
         <ul
           tabindex="0"
           class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
@@ -50,7 +53,9 @@
             </a>
           </li>
           <li><a>Settings</a></li>
-          <li><a @click="emits('logout')">Logout</a></li>
+          <li>
+            <a @click="() => emits('logout')">Logout</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -62,9 +67,22 @@
 import { useRouter } from 'vue-router'
 import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
+import { useAuthStore } from '@/stores/auth'
+import { ref, watch } from 'vue'
+
+const user = ref(useAuthStore().user)
+watch(
+  () => useAuthStore().user,
+  (newValue) => {
+    user.value = newValue
+  },
+  { deep: true }
+)
 defineProps<{
   themesAvailable: string[]
 }>()
+console.log(user.value)
+const siwe = async () => {}
 const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()
 

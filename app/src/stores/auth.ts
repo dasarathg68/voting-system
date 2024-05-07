@@ -14,8 +14,8 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => {
     return {
-      isAuthenticated: false,
-      user: {}
+      isAuthenticated: Boolean(localStorage.getItem('isAuthenticated') || false),
+      user: JSON.parse(localStorage.getItem('user') || '{}')
     }
   },
   actions: {
@@ -36,7 +36,10 @@ export const useAuthStore = defineStore({
         const user = await signInWithPopup(auth, provider)
         if (user) {
           console.log('User logged in')
+          localStorage.setItem('isAuthenticated', 'true')
+          localStorage.setItem('user', JSON.stringify(user.user))
           this.isAuthenticated = true
+          this.user = user.user
           console.log(getAdditionalUserInfo(user))
           router.push('/ballots')
         }
@@ -49,6 +52,8 @@ export const useAuthStore = defineStore({
         const user = await signInWithEmailAndPassword(auth, email, password)
         if (user) {
           console.log('User logged in')
+          localStorage.setItem('isAuthenticated', 'true')
+
           this.isAuthenticated = true
           router.push('/ballots')
         }
@@ -60,6 +65,9 @@ export const useAuthStore = defineStore({
       try {
         await signOut(auth)
         this.isAuthenticated = false
+        localStorage.removeItem('isAuthenticated')
+        localStorage.removeItem('user')
+        this.user = {}
         router.push('/login')
         console.log('User logged out')
       } catch (error) {
