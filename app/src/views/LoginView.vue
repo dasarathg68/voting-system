@@ -85,7 +85,7 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
 import IconGoogle from '@/components/icons/IconGoogle.vue'
 import { ref, watch } from 'vue'
@@ -112,7 +112,7 @@ const register = async () => {
 const googleLogin = async () => {
   await authStore.loginWithGoogle()
 }
-const sendResetEmail = async (email) => {
+const sendResetEmail = async (email: string) => {
   console.log(email)
   await authStore.forgotPassword(email)
   toggleForgotPasswordModal()

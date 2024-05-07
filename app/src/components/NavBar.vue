@@ -69,7 +69,7 @@ import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
 import { useAuthStore } from '@/stores/auth'
 import { ref, watch } from 'vue'
-
+// import { useVotingStore } from '@/stores/votes'
 const user = ref(useAuthStore().user)
 watch(
   () => useAuthStore().user,
@@ -82,7 +82,11 @@ defineProps<{
   themesAvailable: string[]
 }>()
 console.log(user.value)
-const siwe = async () => {}
+const siwe = async () => {
+  // const votingStore = useVotingStore()
+  // await votingStore.connectWallet()
+  // navigateToLink('ballots')
+}
 const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()
 
