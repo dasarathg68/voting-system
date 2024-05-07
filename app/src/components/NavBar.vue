@@ -7,9 +7,9 @@
       </div>
     </div>
     <div class="navbar-end">
-      <div>
+      <!-- <div>
         <button class="btn btn-primary" @click="siwe">SIWE</button>
-      </div>
+      </div> -->
       <div className="dropdown cursor-pointer">
         <div tabindex="0">
           Themes
