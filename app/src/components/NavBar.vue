@@ -7,9 +7,9 @@
       </div>
     </div>
     <div class="navbar-end">
-      <!-- <div>
+      <div>
         <button class="btn btn-primary" @click="siwe">SIWE</button>
-      </div> -->
+      </div>
       <div className="dropdown cursor-pointer">
         <div tabindex="0">
           Themes
@@ -69,7 +69,36 @@ import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
 import { useAuthStore } from '@/stores/auth'
 import { ref, watch } from 'vue'
+
+import { ethers, BrowserProvider } from 'ethers'
 // import { useVotingStore } from '@/stores/votes'
+let provider: any
+let signer: any
+const initialize = async () => {
+  console.log('initializing')
+  // Initialize provider
+  if ('ethereum' in window) {
+    console.log('ethereum found')
+    provider = new ethers.BrowserProvider((window as any).ethereum)
+    ;(window.ethereum as any).on('accountsChanged', async (/*accounts: string[]*/) => {
+      let signer = await provider.getSigner()
+      let message = 'Hello, world'
+      const signature = (await signer).signMessage(message)
+      console.log(signature)
+    })
+    await provider.send('eth_requestAccounts', [])
+    let signer = await provider.getSigner()
+    console.log(signer)
+  }
+  // provider = new ethers.BrowserProvider((window as any).ethereum)
+  // const result = await provider.send('eth_requestAccounts', [])
+
+  // console.log(result)
+  // signer = await provider.getSigner()
+  // console.log(signer)
+
+  //this.signer = this.provider.getSigner();
+}
 const user = ref(useAuthStore().user)
 watch(
   () => useAuthStore().user,
@@ -83,6 +112,7 @@ defineProps<{
 }>()
 console.log(user.value)
 const siwe = async () => {
+  initialize()
   // const votingStore = useVotingStore()
   // await votingStore.connectWallet()
   // navigateToLink('ballots')
