@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { generateNonce, SiweMessage } from "siwe";
+import { generateNonce } from "siwe";
 export const getNonce = (req: Request, res: Response) => {
   const { address } = req.params;
 
