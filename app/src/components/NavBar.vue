@@ -90,7 +90,7 @@ console.log(user.value)
 const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()
 
-function navigateToLink(id: string) {
+const navigateToLink = (id: string) => {
   router.push('/' + id)
 }
 

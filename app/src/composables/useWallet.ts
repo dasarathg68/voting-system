@@ -21,7 +21,7 @@ export interface WalletType {
   userAddress: any
 }
 
-export function useWallet(): WalletType {
+export const useWallet = (): WalletType => {
   const userAddress = ref()
   const isConnected = ref(false)
   let provider: BrowserProvider | undefined

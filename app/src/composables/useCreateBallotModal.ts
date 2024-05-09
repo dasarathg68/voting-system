@@ -1,9 +1,9 @@
 import { ref } from 'vue'
 
-export function useCreateBallotModal() {
+export const useCreateBallotModal = () => {
   const isOpen = ref(false)
 
-  function toggleModal() {
+  const toggleModal = () => {
     isOpen.value = !isOpen.value
   }
 
