@@ -70,10 +70,12 @@
         </form>
       </template>
       <div class="flex mt-2 justify-center w-full">or</div>
-      <div class="flex justify-center pb-3" @click="googleLogin">
-        <button class="btn btn-primary justify-center mt-2">
+      <div class="flex justify-center gap-6 pb-3">
+        <button class="btn btn-primary justify-center mt-2" @click="googleLogin">
           <IconGoogle />
-          <div>Sign in With Google</div>
+        </button>
+        <button class="btn btn-primary justify-center mt-2" @click="signInWithEthereum">
+          <IconMetaMask />
         </button>
       </div>
     </div>
@@ -88,10 +90,17 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
 import IconGoogle from '@/components/icons/IconGoogle.vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import IconMetaMask from '@/components/icons/IconMetaMask.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
+import { useWallet } from '@/composables/useWallet'
+
 const authStore = useAuthStore()
 
+const {
+  // isConnected, userAddress, connectWallet,
+  signInWithEthereum
+} = useWallet()
 const showForgotPasswordModal = ref(false)
 const activeTab = ref('login') // Set initial tab to login
 const email = ref('')
@@ -113,7 +122,6 @@ const googleLogin = async () => {
   await authStore.loginWithGoogle()
 }
 const sendResetEmail = async (email: string) => {
-  console.log(email)
   await authStore.forgotPassword(email)
   toggleForgotPasswordModal()
 }
