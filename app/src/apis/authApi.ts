@@ -1,18 +1,12 @@
-const BACKEND_URL = 'http://localhost:3000'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_ENDPOINT
 export interface IAuthAPI {
-  verifyPayloadAndGetToken(payload: any, methodDetails: any): Promise<string>
+  verifyPayloadAndGetToken(payload: any, methodDetails: any): Promise<void>
 }
 
 export class AuthAPI {}
 
 export class SiweAuthAPI implements IAuthAPI {
-  /*private httpClient: HttpClient;
-  
-    constructor(httpClient: HttpClient) {
-      this.httpClient = httpClient;
-    }*/
-
-  async verifyPayloadAndGetToken(payload: any, methodDetails: any): Promise<string> {
+  async verifyPayloadAndGetToken(payload: any, methodDetails: any): Promise<void> {
     // Make a call to an API endpoint
     const response = await fetch(`${BACKEND_URL}/api/auth/${methodDetails}`, {
       method: 'POST',
@@ -23,10 +17,7 @@ export class SiweAuthAPI implements IAuthAPI {
     })
     const resObj = await response.json()
 
-    if (resObj.success) {
-      const { accessToken: token } = resObj // Assuming the response contains a token field
-      return token
-    } else {
+    if (!resObj.success) {
       throw new Error(resObj.message)
     }
   }

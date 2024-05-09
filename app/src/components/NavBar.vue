@@ -7,9 +7,9 @@
       </div>
     </div>
     <div class="navbar-end">
-      <div>
+      <!-- <div>
         <button class="btn btn-primary" @click="siwe">SIWE</button>
-      </div>
+      </div> -->
       <div className="dropdown cursor-pointer">
         <div tabindex="0">
           Themes
@@ -63,18 +63,16 @@
 
   <!-- </header> -->
 </template>
-<script setup lang="ts">
+<script async setup lang="ts">
 import { useRouter } from 'vue-router'
 import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
 import { useAuthStore } from '@/stores/auth'
 import { ref, watch } from 'vue'
+import { useWallet } from '@/composables/useWallet'
+import { onMounted, onBeforeUnmount } from 'vue'
 
-import { ethers, BrowserProvider } from 'ethers'
-import { useSiwe } from '@/composables/useSiwe.ts'
-// import { useVotingStore } from '@/stores/votes'
-let provider: any
-let signer: any
+const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
 
 const user = ref(useAuthStore().user)
 watch(
@@ -88,18 +86,19 @@ defineProps<{
   themesAvailable: string[]
 }>()
 console.log(user.value)
-const siwe = async () => {
-  // const votingStore = useVotingStore()
-  // await votingStore.connectWallet()
-  // navigateToLink('ballots')
-  useSiwe().siwe()
-}
+
 const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()
 
 function navigateToLink(id: string) {
   router.push('/' + id)
 }
+
+onMounted(async () => {
+  useWallet().connectWallet()
+})
+
+onBeforeUnmount(async () => {})
 </script>
 
 <style scoped></style>

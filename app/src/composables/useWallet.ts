@@ -30,17 +30,17 @@ export function useWallet(): WalletType {
    * This function connects the user's MetaMask wallet to the app.
    * It uses the window.ethereum.request method to connect the wallet.
    */
-  async function connectWallet() {
+  const connectWallet = async () => {
     try {
-      if (typeof window.ethereum !== 'undefined') {
+      if (typeof (window as any).ethereum !== 'undefined') {
         console.log('MetaMask is installed!')
       }
 
-      const { ethereum } = window
+      const { ethereum } = window as any
       if (!ethereum) {
         alert('Please install MetaMask to use this feature')
       }
-      provider = new BrowserProvider(window.ethereum!)
+      provider = new BrowserProvider(ethereum)
       await checkNetwork()
       if (provider) {
         signer = await provider.getSigner()
@@ -52,32 +52,21 @@ export function useWallet(): WalletType {
     // return { provider, signer }
   }
 
-  async function checkNetwork() {
+  const checkNetwork = async () => {
     if (provider) {
       const networkId = await provider.getNetwork()
       console.log('the chainID ', networkId.chainId)
-      if (networkId.chainId != import.meta.env.VITE_CURRENT_NETWORK_ID) {
+      console.log(networkId, import.meta.env.VITE_CURRENT_NETWORK_ID)
+      if (networkId.chainId.toString() != import.meta.env.VITE_CURRENT_NETWORK_ID) {
         alert(` please make sure you're connected to  ${import.meta.env.VITE_CURRENT_NETWORK_NAME}`)
         throw new Error(" please make sure you're connected to sepolia network")
       }
     }
   }
 
-  // TODO: make this function receiving the nonce instead of fetching it
-  /*
-       WHY: SOLID principle :
-       - Single Responsibility Principle: A function should have one and only one reason to change, meaning that a function should have only one job.
-       And here if the API change the function need to be changed. This is not good
-       */
-  async function createSiweMessage(address: string, statement: string) {
+  const createSiweMessage = async (address: string, statement: string) => {
     const domain = window.location.host
     const origin = window.location.origin
-
-    // TODO: remove this ts-ignore
-    //console.log('the layer8 ========= ', layer8)
-    //const res = await fetch(`${endpoint}/nonce`)
-    //const nonce = await res.text()
-    //console.log('' + nonce)
 
     const message = new SiweMessage({
       domain,
@@ -90,32 +79,10 @@ export function useWallet(): WalletType {
     })
     return message.prepareMessage()
   }
-  //   async function createSiweMessage(address: string, statement: string) {
-  //     const requiredChainId = 11155111;  // Example for Ethereum Mainnet
-  //     const currentChainId = await getCurrentChainId();
-
-  //     if (currentChainId !== requiredChainId) {
-  //         throw new Error(`Please switch to Sepolia network `);
-  //     }
-
-  //     const domain = window.location.host;
-  //     const origin = window.location.origin;
-
-  //     const message = new SiweMessage({
-  //         domain,
-  //         address,
-  //         statement,
-  //         uri: origin,
-  //         version: '1',
-  //         chainId: requiredChainId,  // Use the validated chainId
-  //     });
-
-  //     return message.prepareMessage();
-  // }
 
   // TODO : make this function only sign the message and not send it to the backend
   // TODO : Create a function that verify the signature by calling the backend and receiving a the signature
-  async function signInWithEthereum() {
+  const signInWithEthereum = async () => {
     // Connect the wallet if it is not connected
 
     let value
@@ -167,13 +134,14 @@ export function useWallet(): WalletType {
    * If they are not, we set the userAddress and isConnected variables to their default values.
    */
   onMounted(async () => {
-    if (window.ethereum) {
-      provider = new BrowserProvider(window.ethereum)
+    console.log('mounted')
+    if ((window as any).ethereum) {
+      provider = new BrowserProvider((window as any).ethereum)
     }
     intervalId = setInterval(async () => {
       try {
-        if (window.ethereum && provider) {
-          const accounts = await window.ethereum.request({
+        if ((window as any).ethereum && provider) {
+          const accounts = await (window as any).ethereum.request({
             method: 'eth_accounts'
           })
           isConnected.value = accounts.length > 0
