@@ -1,4 +1,7 @@
-import { BrowserProvider, ethers } from 'ethers'
+import {
+  BrowserProvider
+  // ethers
+} from 'ethers'
 import { SiweMessage } from 'siwe'
 import type { Ref } from 'vue'
 import { onBeforeUnmount, onMounted, ref } from 'vue'

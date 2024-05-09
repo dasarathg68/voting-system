@@ -72,7 +72,7 @@ import { ref, watch } from 'vue'
 import { useWallet } from '@/composables/useWallet'
 import { onMounted, onBeforeUnmount } from 'vue'
 
-const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
+// const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
 
 const user = ref(useAuthStore().user)
 watch(
