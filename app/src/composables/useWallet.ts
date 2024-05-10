@@ -14,11 +14,11 @@ export interface WalletType {
 
   provider: BrowserProvider | undefined
 
-  signInWithEthereum: () => Promise<string | undefined>
-
   signer: any
 
   userAddress: any
+
+  createSiweMessage: (address: string, statement: string) => Promise<string>
 }
 
 export const useWallet = (): WalletType => {
@@ -85,47 +85,6 @@ export const useWallet = (): WalletType => {
 
   // TODO : make this function only sign the message and not send it to the backend
   // TODO : Create a function that verify the signature by calling the backend and receiving a the signature
-  const signInWithEthereum = async () => {
-    // Connect the wallet if it is not connected
-
-    let value
-    try {
-      if (!isConnected.value) {
-        console.log('the user is connected ==================')
-        await connectWallet()
-      }
-      // Check if we have the signer and the provider
-      if (!signer || !provider) {
-        throw new Error('No signer or provider')
-      }
-      // Create the message
-      const message = await createSiweMessage(
-        userAddress.value,
-        'Sign in with Ethereum to the app.'
-      )
-      // Sign the message
-      const signature = await signer.signMessage(message)
-
-      // Send the signature to the backend
-      const res = await fetch(`${endpoint}/siwe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ signature, message })
-      })
-
-      if (!res.ok) {
-        console.error(`Failed in getInformation: ${res.statusText}`)
-        return
-      }
-      const { token } = await res.json()
-      value = token
-    } catch (e) {
-      console.log('here', e)
-    }
-    return value
-  }
 
   // Example usage:
 
@@ -176,8 +135,8 @@ export const useWallet = (): WalletType => {
     connectWallet,
     isConnected,
     provider,
-    signInWithEthereum,
     signer,
-    userAddress
+    userAddress,
+    createSiweMessage
   }
 }

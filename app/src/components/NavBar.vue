@@ -63,25 +63,32 @@
 
   <!-- </header> -->
 </template>
-<script async setup lang="ts">
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
 import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
-import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import { ref, watch } from 'vue'
 import { useWallet } from '@/composables/useWallet'
 import { onMounted, onBeforeUnmount } from 'vue'
 
 // const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
+const wallet = useWallet()
 
-const user = ref(useAuthStore().user)
+const user = ref(useAuth().user)
 watch(
-  () => useAuthStore().user,
+  () => {
+    const user = useAuth().user
+    console.log('Watching user:', user)
+    return user
+  },
   (newValue) => {
+    console.log('User changed', newValue)
     user.value = newValue
   },
   { deep: true }
 )
+
 defineProps<{
   themesAvailable: string[]
 }>()
@@ -95,10 +102,8 @@ const navigateToLink = (id: string) => {
 }
 
 onMounted(async () => {
-  useWallet().connectWallet()
+  await wallet.connectWallet()
 })
-
-onBeforeUnmount(async () => {})
 </script>
 
 <style scoped></style>

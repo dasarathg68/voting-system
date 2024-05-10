@@ -88,19 +88,18 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import IconGoogle from '@/components/icons/IconGoogle.vue'
 import { ref } from 'vue'
 import IconMetaMask from '@/components/icons/IconMetaMask.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
-import { useWallet } from '@/composables/useWallet'
 
-const authStore = useAuthStore()
+const authStore = useAuth()
 
 const {
   // isConnected, userAddress, connectWallet,
   signInWithEthereum
-} = useWallet()
+} = useAuth()
 const showForgotPasswordModal = ref(false)
 const activeTab = ref('login') // Set initial tab to login
 const email = ref('')

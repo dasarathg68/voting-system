@@ -87,7 +87,7 @@ const addVoter = () => {
 const createBallot = async () => {
   const startTimeUnix = Date.parse(startDateTime.value) / 1000 // Dividing by 1000 to convert milliseconds to seconds
   const endTimeUnix = Date.parse(endDateTime.value) / 1000
-  console.log(voters.value)
+  // console.log(voters.value)
   // Call your smart contract function here with the provided inputs
   // await yourContractInstance.createBallot(
   //   name.value,
