@@ -1,8 +1,7 @@
 import { ref } from 'vue'
 import { auth } from '@/config/firebaseConfig'
 import router from '@/router'
-import { useWallet } from '@/composables/useWallet'
-const { connectWallet, isConnected, provider, signer, userAddress, createSiweMessage } = useWallet()
+import { wallet } from '@/utils/wallet'
 import {
   createUserWithEmailAndPassword,
   getAdditionalUserInfo,
@@ -31,21 +30,22 @@ export function useAuth() {
 
     let value
     try {
-      if (!isConnected.value) {
+      if (!wallet.isConnected) {
         console.log('the user is connected ==================')
-        await connectWallet()
+        await wallet.connectWallet()
       }
       // Check if we have the signer and the provider
-      if (!signer || !provider) {
+      console.log(wallet.signer, wallet.provider)
+      if (!wallet.signer || !wallet.provider) {
         throw new Error('No signer or provider')
       }
       // Create the message
-      const message = await createSiweMessage(
-        userAddress.value,
+      const message = await wallet.createSiweMessage(
+        wallet.userAddress,
         'Sign in with Ethereum to the app.'
       )
       // Sign the message
-      const signature = await signer.signMessage(message)
+      const signature = await wallet.signer.signMessage(message)
 
       //   // Send the signature to the backend
       //   const res = await fetch(`${endpoint}/siwe`, {

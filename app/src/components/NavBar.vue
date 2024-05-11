@@ -69,11 +69,10 @@ import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
 import { useAuth } from '@/composables/useAuth'
 import { ref, watch } from 'vue'
-import { useWallet } from '@/composables/useWallet'
+import { wallet } from '@/utils/wallet'
 import { onMounted, onBeforeUnmount } from 'vue'
 
 // const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
-const wallet = useWallet()
 
 const { user } = useAuth()
 
