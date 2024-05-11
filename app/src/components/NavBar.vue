@@ -75,16 +75,12 @@ import { onMounted, onBeforeUnmount } from 'vue'
 // const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
 const wallet = useWallet()
 
-const user = ref(useAuth().user)
+const { user } = useAuth()
+
 watch(
-  () => {
-    const user = useAuth().user
-    console.log('Watching user:', user)
-    return user
-  },
+  user,
   (newValue) => {
     console.log('User changed', newValue)
-    user.value = newValue
   },
   { deep: true }
 )

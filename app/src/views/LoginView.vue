@@ -94,7 +94,7 @@ import { ref } from 'vue'
 import IconMetaMask from '@/components/icons/IconMetaMask.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 
-const authStore = useAuth()
+const auth = useAuth()
 
 const {
   // isConnected, userAddress, connectWallet,
@@ -111,17 +111,17 @@ const toggleForgotPasswordModal = () => {
   showForgotPasswordModal.value = !showForgotPasswordModal.value
 }
 const login = async () => {
-  await authStore.loginWithEmail(email.value, password.value)
+  await auth.loginWithEmail(email.value, password.value)
 }
 
 const register = async () => {
-  await authStore.signup(registerEmail.value, registerPassword.value)
+  await auth.signup(registerEmail.value, registerPassword.value)
 }
 const googleLogin = async () => {
-  await authStore.loginWithGoogle()
+  await auth.loginWithGoogle()
 }
 const sendResetEmail = async (email: string) => {
-  await authStore.forgotPassword(email)
+  await auth.forgotPassword(email)
   toggleForgotPasswordModal()
 }
 </script>

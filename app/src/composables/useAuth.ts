@@ -12,11 +12,9 @@ import {
   signOut,
   sendPasswordResetEmail
 } from 'firebase/auth'
-
+const isAuthenticated = ref(Boolean(localStorage.getItem('isAuthenticated') || false))
+const user = ref(JSON.parse(localStorage.getItem('user') || '{}'))
 export function useAuth() {
-  const isAuthenticated = ref(Boolean(localStorage.getItem('isAuthenticated') || false))
-  const user = ref(JSON.parse(localStorage.getItem('user') || '{}'))
-
   async function signup(email: string, password: string) {
     // console.log(email, password)
     try {
