@@ -22,11 +22,7 @@ const logout = () => {
   <div class="flex flex-col min-h-svh justify-between" :data-theme="currentTheme">
     <NavBar
       :themesAvailable="useThemeStore().themes"
-      @theme-changed="
-        (newTheme) => {
-          useThemeStore().setTheme(newTheme)
-        }
-      "
+      @theme-changed="(newTheme) => useThemeStore().setTheme(newTheme)"
       @logout="logout"
     />
     <RouterView />
