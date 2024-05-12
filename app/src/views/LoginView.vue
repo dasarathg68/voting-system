@@ -74,7 +74,7 @@
         <button class="btn btn-primary justify-center mt-2" @click="googleLogin">
           <IconGoogle />
         </button>
-        <button class="btn btn-primary justify-center mt-2" @click="signInWithEthereum">
+        <button class="btn btn-primary justify-center mt-2" @click="siwe">
           <IconMetaMask />
         </button>
       </div>
@@ -130,6 +130,14 @@ const register = async () => {
     show(ToastType.Error, e)
   }
 }
+const siwe = async () => {
+  try {
+    await signInWithEthereum()
+    show(ToastType.Success, 'User Logged in successfully')
+  } catch (e: any) {
+    show(ToastType.Error, 'Failed to SIWE')
+  }
+}
 const googleLogin = async () => {
   try {
     await auth.loginWithGoogle()
@@ -139,7 +147,11 @@ const googleLogin = async () => {
   }
 }
 const sendResetEmail = async (email: string) => {
-  await auth.forgotPassword(email)
-  toggleForgotPasswordModal()
+  try {
+    await auth.forgotPassword(email)
+    show(ToastType.Success, 'Reset email sent successfully')
+  } catch (e: any) {
+    show(ToastType.Error, e)
+  }
 }
 </script>

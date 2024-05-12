@@ -27,42 +27,39 @@ export function useAuth() {
     // Connect the wallet if it is not connected
 
     let value
-    try {
-      if (!wallet.isConnected) {
-        console.log('the user is connected ==================')
-        await wallet.connectWallet()
-      }
-      // Check if we have the signer and the provider
-      console.log(wallet.signer, wallet.provider)
-      if (!wallet.signer || !wallet.provider) {
-        throw new Error('No signer or provider')
-      }
-      // Create the message
-      const message = await wallet.createSiweMessage(
-        wallet.userAddress,
-        'Sign in with Ethereum to the app.'
-      )
-      // Sign the message
-      const signature = await wallet.signer.signMessage(message)
-
-      //   // Send the signature to the backend
-      //   const res = await fetch(`${endpoint}/siwe`, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify({ signature, message })
-      //   })
-
-      //   if (!res.ok) {
-      //     console.error(`Failed in getInformation: ${res.statusText}`)
-      //     return
-      //   }
-      //   const { token } = await res.json()
-      //   value = token
-    } catch (e) {
-      console.log('here', e)
+    if (!wallet.isConnected) {
+      console.log('the user is connected ==================')
+      await wallet.connectWallet()
     }
+    // Check if we have the signer and the provider
+    console.log(wallet.signer, wallet.provider)
+    if (!wallet.signer || !wallet.provider) {
+      throw new Error('No signer or provider')
+    }
+    // Create the message
+    const message = await wallet.createSiweMessage(
+      wallet.userAddress,
+      'Sign in with Ethereum to the app.'
+    )
+    // Sign the message
+    const signature = await wallet.signer.signMessage(message)
+    router.push('/ballots')
+
+    //   // Send the signature to the backend
+    //   const res = await fetch(`${endpoint}/siwe`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ signature, message })
+    //   })
+
+    //   if (!res.ok) {
+    //     console.error(`Failed in getInformation: ${res.statusText}`)
+    //     return
+    //   }
+    //   const { token } = await res.json()
+    //   value = token
 
     return value
   }
@@ -108,12 +105,8 @@ export function useAuth() {
   }
 
   async function forgotPassword(email: string) {
-    try {
-      await sendPasswordResetEmail(auth, email)
-      console.log('Password reset email sent')
-    } catch (error) {
-      console.log(error)
-    }
+    await sendPasswordResetEmail(auth, email)
+    console.log('Password reset email sent')
   }
 
   return {
