@@ -43,6 +43,8 @@ export function useAuth() {
     )
     // Sign the message
     const signature = await wallet.signer.signMessage(message)
+    isAuthenticated.value = true
+
     router.push('/ballots')
 
     //   // Send the signature to the backend
