@@ -91,7 +91,7 @@
 import { useAuth } from '@/composables/useAuth'
 import IconGoogle from '@/components/icons/IconGoogle.vue'
 import { ref } from 'vue'
-import IconMetaMask from '@/components/icons/IconMetaMask.vue'
+import IconMetaMask from '@/components/icons/IconMetamask.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
 import { useToastStore } from '@/stores/toast'
 import { ToastType } from '@/types/toast-type'
