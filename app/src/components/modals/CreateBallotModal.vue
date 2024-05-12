@@ -70,24 +70,24 @@ const candidate = ref<string>('')
 const voters = ref<string[]>([])
 const voter = ref<string>('')
 
-function addCandidate() {
+const addCandidate = () => {
   if (candidate.value.trim() !== '') {
     candidates.value.push(candidate.value.trim())
     candidate.value = ''
   }
 }
 
-function addVoter() {
+const addVoter = () => {
   if (voter.value.trim() !== '') {
     voters.value.push(voter.value.trim())
     voter.value = ''
   }
 }
 
-async function createBallot() {
+const createBallot = async () => {
   const startTimeUnix = Date.parse(startDateTime.value) / 1000 // Dividing by 1000 to convert milliseconds to seconds
   const endTimeUnix = Date.parse(endDateTime.value) / 1000
-  console.log(voters.value)
+  // console.log(voters.value)
   // Call your smart contract function here with the provided inputs
   // await yourContractInstance.createBallot(
   //   name.value,

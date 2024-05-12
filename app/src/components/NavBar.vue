@@ -67,32 +67,38 @@
 import { useRouter } from 'vue-router'
 import IconBell from '@/components/icons/IconBell.vue'
 import IconAvatar from '@/components/icons/IconAvatar.vue'
-import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import { ref, watch } from 'vue'
-// import { useVotingStore } from '@/stores/votes'
-const user = ref(useAuthStore().user)
+import { wallet } from '@/utils/wallet'
+import { onMounted, onBeforeUnmount } from 'vue'
+
+// const { isConnected, userAddress, connectWallet, signInWithEthereum } = useWallet()
+
+const { user } = useAuth()
+
 watch(
-  () => useAuthStore().user,
+  user,
   (newValue) => {
-    user.value = newValue
+    console.log('User changed', newValue)
   },
   { deep: true }
 )
+
 defineProps<{
   themesAvailable: string[]
 }>()
 console.log(user.value)
-const siwe = async () => {
-  // const votingStore = useVotingStore()
-  // await votingStore.connectWallet()
-  // navigateToLink('ballots')
-}
+
 const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()
 
-function navigateToLink(id: string) {
+const navigateToLink = (id: string) => {
   router.push('/' + id)
 }
+
+onMounted(async () => {
+  await wallet.connectWallet()
+})
 </script>
 
 <style scoped></style>

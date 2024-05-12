@@ -70,10 +70,12 @@
         </form>
       </template>
       <div class="flex mt-2 justify-center w-full">or</div>
-      <div class="flex justify-center pb-3" @click="googleLogin">
-        <button class="btn btn-primary justify-center mt-2">
+      <div class="flex justify-center gap-6 pb-3">
+        <button class="btn btn-primary justify-center mt-2" @click="googleLogin">
           <IconGoogle />
-          <div>Sign in With Google</div>
+        </button>
+        <button class="btn btn-primary justify-center mt-2" @click="siwe">
+          <IconMetaMask />
         </button>
       </div>
     </div>
@@ -86,12 +88,21 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import IconGoogle from '@/components/icons/IconGoogle.vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import IconMetaMask from '@/components/icons/IconMetaMask.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
-const authStore = useAuthStore()
+import { useToastStore } from '@/stores/toast'
+import { ToastType } from '@/types/toast-type'
+const { show } = useToastStore()
 
+const auth = useAuth()
+
+const {
+  // isConnected, userAddress, connectWallet,
+  signInWithEthereum
+} = useAuth()
 const showForgotPasswordModal = ref(false)
 const activeTab = ref('login') // Set initial tab to login
 const email = ref('')
@@ -103,18 +114,44 @@ const toggleForgotPasswordModal = () => {
   showForgotPasswordModal.value = !showForgotPasswordModal.value
 }
 const login = async () => {
-  await authStore.loginWithEmail(email.value, password.value)
+  try {
+    await auth.loginWithEmail(email.value, password.value)
+    show(ToastType.Success, 'User Logged in successfully')
+  } catch (e: any) {
+    show(ToastType.Error, e.message)
+    console.log(e)
+  }
 }
 
 const register = async () => {
-  await authStore.signup(registerEmail.value, registerPassword.value)
+  try {
+    await auth.signup(registerEmail.value, registerPassword.value)
+  } catch (e: any) {
+    show(ToastType.Error, e)
+  }
+}
+const siwe = async () => {
+  try {
+    await signInWithEthereum()
+    show(ToastType.Success, 'User Logged in successfully')
+  } catch (e: any) {
+    show(ToastType.Error, 'Failed to SIWE')
+  }
 }
 const googleLogin = async () => {
-  await authStore.loginWithGoogle()
+  try {
+    await auth.loginWithGoogle()
+    show(ToastType.Success, 'User Logged in successfully')
+  } catch (e: any) {
+    show(ToastType.Error, e)
+  }
 }
 const sendResetEmail = async (email: string) => {
-  console.log(email)
-  await authStore.forgotPassword(email)
-  toggleForgotPasswordModal()
+  try {
+    await auth.forgotPassword(email)
+    show(ToastType.Success, 'Reset email sent successfully')
+  } catch (e: any) {
+    show(ToastType.Error, e)
+  }
 }
 </script>
