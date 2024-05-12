@@ -16,13 +16,11 @@ const user = ref(JSON.parse(localStorage.getItem('user') || '{}'))
 export function useAuth() {
   async function signup(email: string, password: string) {
     // console.log(email, password)
-    try {
-      const user = await createUserWithEmailAndPassword(auth, email, password)
-      if (user) {
-        console.log('User created')
-      }
-    } catch (error) {
-      console.log(error)
+    const user = await createUserWithEmailAndPassword(auth, email, password)
+    if (user) {
+      console.log('User created')
+    } else {
+      throw new Error('User not created')
     }
   }
   const signInWithEthereum = async () => {
@@ -69,51 +67,44 @@ export function useAuth() {
     return value
   }
   async function loginWithGoogle() {
-    try {
-      const provider = new GoogleAuthProvider()
-      const user1 = await signInWithPopup(auth, provider)
-      if (user1) {
-        console.log('User logged in')
-        localStorage.setItem('isAuthenticated', 'true')
-        localStorage.setItem('user', JSON.stringify(user1.user))
-        isAuthenticated.value = true
-        user.value = user1.user
-        // console.log(getAdditionalUserInfo(user1))
-        console.log(user.value)
-        router.push('/ballots')
-      }
-    } catch (error) {
-      console.log(error)
+    const provider = new GoogleAuthProvider()
+    const user1 = await signInWithPopup(auth, provider)
+    if (user1) {
+      console.log('User logged in')
+      localStorage.setItem('isAuthenticated', 'true')
+      localStorage.setItem('user', JSON.stringify(user1.user))
+      isAuthenticated.value = true
+      user.value = user1.user
+      // console.log(getAdditionalUserInfo(user1))
+      console.log(user.value)
+      router.push('/ballots')
+    } else {
+      throw new Error('User not found')
     }
   }
 
   async function loginWithEmail(email: string, password: string) {
-    try {
-      const user = await signInWithEmailAndPassword(auth, email, password)
-      if (user) {
-        console.log('User logged in')
-        localStorage.setItem('isAuthenticated', 'true')
-        isAuthenticated.value = true
-        router.push('/ballots')
-      }
-    } catch (error) {
-      console.log(error)
+    const user = await signInWithEmailAndPassword(auth, email, password)
+    if (user) {
+      console.log('User logged in')
+      localStorage.setItem('isAuthenticated', 'true')
+      isAuthenticated.value = true
+
+      router.push('/ballots')
+    } else {
+      throw new Error('User not found')
     }
   }
 
   async function logout() {
-    try {
-      await signOut(auth)
-      isAuthenticated.value = false
-      localStorage.removeItem('isAuthenticated')
-      localStorage.removeItem('user')
-      user.value = {}
-      console.log(user.value)
-      router.push('/login')
-      console.log('User logged out')
-    } catch (error) {
-      console.log(error)
-    }
+    await signOut(auth)
+    isAuthenticated.value = false
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('user')
+    user.value = {}
+    console.log(user.value)
+    router.push('/login')
+    console.log('User logged out')
   }
 
   async function forgotPassword(email: string) {

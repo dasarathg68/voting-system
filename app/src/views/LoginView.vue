@@ -93,6 +93,9 @@ import IconGoogle from '@/components/icons/IconGoogle.vue'
 import { ref } from 'vue'
 import IconMetaMask from '@/components/icons/IconMetaMask.vue'
 import ForgotPasswordModal from '@/components/modals/ForgotPasswordModal.vue'
+import { useToastStore } from '@/stores/toast'
+import { ToastType } from '@/types/toast-type'
+const { show } = useToastStore()
 
 const auth = useAuth()
 
@@ -111,14 +114,29 @@ const toggleForgotPasswordModal = () => {
   showForgotPasswordModal.value = !showForgotPasswordModal.value
 }
 const login = async () => {
-  await auth.loginWithEmail(email.value, password.value)
+  try {
+    await auth.loginWithEmail(email.value, password.value)
+    show(ToastType.Success, 'User Logged in successfully')
+  } catch (e: any) {
+    show(ToastType.Error, e.message)
+    console.log(e)
+  }
 }
 
 const register = async () => {
-  await auth.signup(registerEmail.value, registerPassword.value)
+  try {
+    await auth.signup(registerEmail.value, registerPassword.value)
+  } catch (e: any) {
+    show(ToastType.Error, e)
+  }
 }
 const googleLogin = async () => {
-  await auth.loginWithGoogle()
+  try {
+    await auth.loginWithGoogle()
+    show(ToastType.Success, 'User Logged in successfully')
+  } catch (e: any) {
+    show(ToastType.Error, e)
+  }
 }
 const sendResetEmail = async (email: string) => {
   await auth.forgotPassword(email)
