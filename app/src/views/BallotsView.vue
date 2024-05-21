@@ -18,9 +18,9 @@ import { wallet } from '@/utils/wallet'
 import { onMounted } from 'vue'
 
 const { isOpen: isCreateBallotModal, toggleModal: toggleCreateBallotModal } = useCreateBallotModal()
-onMounted(() => {
-  wallet.connectWallet()
-  console.log(useVotingStore().getBallots())
+onMounted(async () => {
+  await wallet.connectWallet()
+  console.log(await useVotingStore().getBallots())
   console.log('BallotsView mounted')
 })
 </script>

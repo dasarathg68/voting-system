@@ -13,10 +13,6 @@ class Wallet {
 
   async connectWallet() {
     try {
-      if (typeof (window as any).ethereum !== 'undefined') {
-        console.log('MetaMask is installed!')
-      }
-
       const { ethereum } = window as any
       if (!ethereum) {
         alert('Please install MetaMask to use this feature')
