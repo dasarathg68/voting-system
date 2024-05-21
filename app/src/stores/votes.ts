@@ -30,7 +30,6 @@ export const useVotingStore = defineStore('voting', {
       candidatesList: string[],
       votersList: string[]
     ): Promise<void> {
-      wallet.connectWallet()
       provider = wallet.provider
 
       if (provider) {
@@ -56,7 +55,6 @@ export const useVotingStore = defineStore('voting', {
     },
 
     async getBallots(): Promise<string[]> {
-      wallet.connectWallet()
       provider = wallet.provider
       if (provider) {
         console.log('provider', provider)
@@ -68,7 +66,6 @@ export const useVotingStore = defineStore('voting', {
       return []
     },
     async vote(ballotName: string, candidate: string, voter: string): Promise<void> {
-      wallet.connectWallet()
       provider = wallet.provider
       if (provider) {
         contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
@@ -83,7 +80,6 @@ export const useVotingStore = defineStore('voting', {
       }
     },
     async getCandidateList(ballotIndex: number): Promise<string[]> {
-      wallet.connectWallet()
       provider = wallet.provider
       if (provider) {
         contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
@@ -94,7 +90,6 @@ export const useVotingStore = defineStore('voting', {
       return []
     },
     async getVoteCount(ballotName: string, candidate: string): Promise<number> {
-      wallet.connectWallet()
       provider = wallet.provider
       if (provider) {
         contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())

@@ -92,13 +92,18 @@ const handleSubmit = async () => {
   const endTimeUnix = Date.parse(endDateTime.value) / 1000
 
   const votingStore = useVotingStore()
-  await votingStore.createBallot(
-    name.value,
-    startTimeUnix,
-    endTimeUnix,
-    candidates.value,
-    voters.value
-  )
+  try {
+    await votingStore.createBallot(
+      name.value,
+      startTimeUnix,
+      endTimeUnix,
+      candidates.value,
+      voters.value
+    )
+    emits('toggleCreateBallotModal')
+  } catch (error) {
+    console.error(error)
+  }
   // console.log(voters.value)
   // Call your smart contract function here with the provided inputs
   // await yourContractInstance.createBallot(
