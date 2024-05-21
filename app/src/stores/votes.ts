@@ -1,72 +1,113 @@
-// import { defineStore } from 'pinia'
+import { defineStore } from 'pinia'
 
-// import { ethers } from 'ethers'
-// import ABI from '@/abi/Voting.json'
+import { ethers } from 'ethers'
+import ABI from '@/abi/Voting.json'
+import { useToastStore } from './toast'
+import { ToastType } from '@/types'
+import { wallet } from '@/utils/wallet'
 
-// // Define the ABI
+const VOTING_CONTRACT_ADDRESS = '0x78448dBD0Ed87f3259c3694679F8F1d0978f91f8'
 
-// // console.log(ABI)
-// // Define the contract address
-// const VOTING_CONTRACT_ADDRESS = '0x78448dBD0Ed87f3259c3694679F8F1d0978f91f8'
+// Create a new instance of the contract
+let provider: ethers.BrowserProvider | undefined
+let contract: ethers.Contract
 
-// // Create a new instance of the contract
-// let provider: ethers.BrowserProvider
-// let contract: ethers.Contract
+// Define the store
+export const useVotingStore = defineStore('voting', {
+  state: () => ({
+    contract: null as ethers.Contract | null,
+    createBallotLoading: false as boolean,
+    // pushTipLoading: false as boolean,
+    isWalletConnected: false as boolean,
+    balance: '0' as string
+  }),
 
-// // Define the store
-// export const useVotingStore = defineStore('voting', {
-//   state: () => ({
-//     contract: null as ethers.Contract | null,
-//     sendTipLoading: false as boolean,
-//     pushTipLoading: false as boolean,
-//     isWalletConnected: false as boolean,
-//     balance: '0' as string
-//   }),
+  actions: {
+    async createBallot(
+      name: string,
+      startTime: number,
+      endTime: number,
+      candidatesList: string[],
+      votersList: string[]
+    ): Promise<void> {
+      wallet.connectWallet()
+      provider = wallet.provider
 
-//   actions: {
-//     async connectWallet() {
-//       if (this.isWalletConnected) return
-//       if (!(window as any).ethereum) {
-//         // show(ToastType.Info, 'Please install Metamask')
-//         return
-//       }
-//       provider = new ethers.BrowserProvider((window as any).ethereum)
+      if (provider) {
+        contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
+        this.createBallotLoading = true
+        try {
+          const tx = await contract.createBallot(
+            name,
+            startTime,
+            endTime,
+            candidatesList,
+            votersList
+          )
+          console.log(tx)
+          await tx.wait()
+          console.log(tx)
+          useToastStore().show(ToastType.Success, 'Ballot created successfully')
+        } catch (error) {
+          console.log(error)
+          useToastStore().show(ToastType.Error, 'Error creating ballot')
+        }
+      }
+    },
 
-//       const ret = await provider.send('eth_requestAccounts', [])
-//       console.log(ret)
-//       //   console.log(VOTING_CONTRACT_ADDRESS)
-//       this.contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
-//       this.isWalletConnected = true
-//     },
-
-//     async createBallot(
-//       name: string,
-//       startTime: number,
-//       endTime: number,
-//       candidatesList: string[],
-//       votersList: string[]
-//     ): Promise<void> {
-//       // ... implementation here ...
-//     },
-
-//     async getBallots(): Promise<string[]> {
-//       // ... implementation here ...
-//     },
-
-//     async vote(ballotName: string, candidate: string, voter: string): Promise<void> {
-//       // ... implementation here ...
-//     },
-
-//     async getCandidateList(ballotIndex: number): Promise<string[]> {
-//       // ... implementation here ...
-//     },
-
-//     async getVoteCount(ballotName: string, candidate: string): Promise<number> {
-//       // ... implementation here ...
-//     },
+    async getBallots(): Promise<string[]> {
+      wallet.connectWallet()
+      provider = wallet.provider
+      if (provider) {
+        console.log('provider', provider)
+        contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
+        const res = await contract.getBallots()
+        console.log(res)
+        return []
+      }
+      return []
+    },
+    async vote(ballotName: string, candidate: string, voter: string): Promise<void> {
+      wallet.connectWallet()
+      provider = wallet.provider
+      if (provider) {
+        contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
+        try {
+          const tx = await contract.vote(ballotName, candidate, voter)
+          await tx.wait()
+          useToastStore().show(ToastType.Success, 'Vote submitted successfully')
+        } catch (error) {
+          console.log(error)
+          useToastStore().show(ToastType.Error, 'Error submitting vote')
+        }
+      }
+    },
+    async getCandidateList(ballotIndex: number): Promise<string[]> {
+      wallet.connectWallet()
+      provider = wallet.provider
+      if (provider) {
+        contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
+        const res = await contract.getCandidateList(ballotIndex)
+        console.log(res)
+        return []
+      }
+      return []
+    },
+    async getVoteCount(ballotName: string, candidate: string): Promise<number> {
+      wallet.connectWallet()
+      provider = wallet.provider
+      if (provider) {
+        contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
+        const res = await contract.getVoteCount(ballotName, candidate)
+        console.log(res)
+        return res
+      }
+      return 0
+    }
+  }
+})
 
 //     async getBallotCount(): Promise<number> {
 //       // ... implementation here ...
 //     }
 //   }
-// })

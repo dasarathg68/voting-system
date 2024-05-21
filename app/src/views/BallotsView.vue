@@ -13,6 +13,12 @@
 <script setup lang="ts">
 import CreateBallotCard from '@/components/CreateBallotCard.vue'
 import { useCreateBallotModal } from '@/composables/useCreateBallotModal'
+import { useVotingStore } from '@/stores/votes'
+import { onMounted } from 'vue'
 
 const { isOpen: isCreateBallotModal, toggleModal: toggleCreateBallotModal } = useCreateBallotModal()
+onMounted(() => {
+  console.log(useVotingStore().getCandidateList(1))
+  console.log('BallotsView mounted')
+})
 </script>

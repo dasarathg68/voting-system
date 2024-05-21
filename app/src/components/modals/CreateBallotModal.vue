@@ -48,7 +48,7 @@
         <div v-for="(voter, index) in voters" :key="index">
           {{ voter }}
         </div>
-        <button class="btn btn-primary justify-center" @click="createBallot">Create Ballot</button>
+        <button class="btn btn-primary justify-center" @click="handleSubmit">Create Ballot</button>
       </div>
     </div>
   </dialog>
@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { ref, defineEmits, defineProps } from 'vue'
+import { useVotingStore } from '@/stores/votes'
 
 const emits = defineEmits(['toggleCreateBallotModal'])
 const props = defineProps<{
@@ -84,9 +85,20 @@ const addVoter = () => {
   }
 }
 
-const createBallot = async () => {
+const handleSubmit = async () => {
+  console.log('button triggered')
+
   const startTimeUnix = Date.parse(startDateTime.value) / 1000 // Dividing by 1000 to convert milliseconds to seconds
   const endTimeUnix = Date.parse(endDateTime.value) / 1000
+
+  const votingStore = useVotingStore()
+  await votingStore.createBallot(
+    name.value,
+    startTimeUnix,
+    endTimeUnix,
+    candidates.value,
+    voters.value
+  )
   // console.log(voters.value)
   // Call your smart contract function here with the provided inputs
   // await yourContractInstance.createBallot(
