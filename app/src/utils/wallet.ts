@@ -42,8 +42,8 @@ class Wallet {
     if (this.provider) {
       const networkId = await this.provider.getNetwork()
 
-      console.log('the chainID ', networkId.chainId)
-      console.log(networkId, import.meta.env.VITE_CURRENT_NETWORK_ID)
+      // console.log('the chainID ', networkId.chainId)
+      // console.log(networkId, import.meta.env.VITE_CURRENT_NETWORK_ID)
       if (networkId.chainId.toString() != import.meta.env.VITE_CURRENT_NETWORK_ID) {
         alert(` please make sure you're connected to  ${import.meta.env.VITE_CURRENT_NETWORK_NAME}`)
         throw new Error(" please make sure you're connected to sepolia network")

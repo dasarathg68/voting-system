@@ -86,8 +86,6 @@ const addVoter = () => {
 }
 
 const handleSubmit = async () => {
-  console.log('button triggered')
-
   const startTimeUnix = Date.parse(startDateTime.value) / 1000 // Dividing by 1000 to convert milliseconds to seconds
   const endTimeUnix = Date.parse(endDateTime.value) / 1000
 
@@ -104,15 +102,5 @@ const handleSubmit = async () => {
   } catch (error) {
     console.error(error)
   }
-  // console.log(voters.value)
-  // Call your smart contract function here with the provided inputs
-  // await yourContractInstance.createBallot(
-  //   name.value,
-  //   startTime.value,
-  //   endTime.value,
-  //   candidates.value,
-  //   voters.value
-  // )
-  // Reset input fields or handle success
 }
 </script>

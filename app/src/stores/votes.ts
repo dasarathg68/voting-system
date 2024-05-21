@@ -43,9 +43,7 @@ export const useVotingStore = defineStore('voting', {
             candidatesList,
             votersList
           )
-          console.log(tx)
           await tx.wait()
-          console.log(tx)
           useToastStore().show(ToastType.Success, 'Ballot created successfully')
         } catch (error) {
           console.log(error)
@@ -57,10 +55,8 @@ export const useVotingStore = defineStore('voting', {
     async getBallots(): Promise<string[]> {
       provider = wallet.provider
       if (provider) {
-        console.log('provider', provider)
         contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
         const res = await contract.getBallots()
-        console.log(res)
         return []
       }
       return []
@@ -84,7 +80,6 @@ export const useVotingStore = defineStore('voting', {
       if (provider) {
         contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
         const res = await contract.getCandidateList(ballotIndex)
-        console.log(res)
         return []
       }
       return []
@@ -94,7 +89,6 @@ export const useVotingStore = defineStore('voting', {
       if (provider) {
         contract = new ethers.Contract(VOTING_CONTRACT_ADDRESS, ABI, await provider.getSigner())
         const res = await contract.getVoteCount(ballotName, candidate)
-        console.log(res)
         return res
       }
       return 0

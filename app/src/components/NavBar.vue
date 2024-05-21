@@ -76,18 +76,9 @@ import { onMounted, onBeforeUnmount } from 'vue'
 
 const { user } = useAuth()
 
-watch(
-  user,
-  (newValue) => {
-    console.log('User changed', newValue)
-  },
-  { deep: true }
-)
-
 defineProps<{
   themesAvailable: string[]
 }>()
-console.log(user.value)
 
 const emits = defineEmits(['themeChanged', 'logout'])
 const router = useRouter()

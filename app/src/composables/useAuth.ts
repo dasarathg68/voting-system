@@ -15,7 +15,6 @@ const isAuthenticated = ref(Boolean(localStorage.getItem('isAuthenticated') || f
 const user = ref(JSON.parse(localStorage.getItem('user') || '{}'))
 export function useAuth() {
   async function signup(email: string, password: string) {
-    // console.log(email, password)
     const user = await createUserWithEmailAndPassword(auth, email, password)
     if (user) {
       console.log('User created')
@@ -32,7 +31,6 @@ export function useAuth() {
       await wallet.connectWallet()
     }
     // Check if we have the signer and the provider
-    console.log(wallet.signer, wallet.provider)
     if (!wallet.signer || !wallet.provider) {
       throw new Error('No signer or provider')
     }
@@ -74,8 +72,6 @@ export function useAuth() {
       localStorage.setItem('user', JSON.stringify(user1.user))
       isAuthenticated.value = true
       user.value = user1.user
-      // console.log(getAdditionalUserInfo(user1))
-      console.log(user.value)
       router.push('/ballots')
     } else {
       throw new Error('User not found')
