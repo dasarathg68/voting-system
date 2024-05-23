@@ -45,17 +45,18 @@ async function main() {
 
     // await votingContract.vote("Sample Ballot", "Alice", votersList[0]);
     // console.log("Voted successfully");
-    const voteCount = await votingContract.getVoteCount(
-      "Sample Ballot",
-      "Alice"
-    );
-    console.log("Total votes for Alice:", voteCount.toNumber());
+    // const voteCount = await votingContract.getVoteCount("Test Ballot", "Ravi");
+    // const ballots = await votingContract.getBallots();
+    // console.log(ballots);
+    // console.log("Total votes for Alice:", voteCount.toNumber());
     // Get list of candidates
     // const candidates = await votingContract.getCandidateList();
     // console.log("List of Candidates:", candidates);
     // // await votingContract.addNewCandidate("Malaika");
-    // // const newCandidates = await votingContract.getCandidateList();
-    // // console.log(newCandidates);
+    const ballotNames = await votingContract.getBallots();
+    console.log(ballotNames);
+    // const newCandidates = await votingContract.getCandidateList("Hi");
+    // console.log(newCandidates);
     // // Check if "Johnny" is a valid candidate
     // const johnnyIsValid = await votingContract.isValidCandidate("Johnny");
     // if (!johnnyIsValid) {

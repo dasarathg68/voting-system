@@ -2,93 +2,62 @@
 pragma solidity ^0.8.0;
 
 import "./Types.sol";
+import "hardhat/console.sol";
 
 contract Voting {
-   
 
-    Types.Ballot[] public ballots;
 
+    mapping(string => Types.Ballot) public ballots;
+    string[] public ballotNames;
     constructor() {}
 
-    function createBallot(string memory name, uint256 startTime, uint256 endTime, string[] memory candidatesList, address[] memory votersList) external  {
-    require(endTime > startTime, "End time must be after start time");
+    function createBallot(string memory name, uint256 startTime, uint256 endTime, string[] memory candidatesList, address[] memory votersList) external {
+        require(endTime > startTime, "End time must be after start time");
 
-    // Add a new ballot to the ballots array
-    ballots.push();
-    Types.Ballot storage ballot = ballots[ballots.length - 1];
-
-    ballot.startTime = startTime;
-    ballot.endTime = endTime;
-
-    for (uint256 i = 0; i < candidatesList.length; i++) {
+        Types.Ballot storage ballot = ballots[name];
+        ballot.startTime = startTime;
+        ballot.endTime = endTime;
         ballot.owner = msg.sender;
         ballot.name = name;
-        ballot.candidates.push(candidatesList[i]);
-        ballot.votes[candidatesList[i]] = 0;
+
+        for (uint256 i = 0; i < candidatesList.length; i++) {
+            ballot.candidates.push(candidatesList[i]);
+            ballot.votes[candidatesList[i]] = 0;
+            console.log("Candidate added: %s", candidatesList[i]);
+        }
+
+        for (uint256 i = 0; i < votersList.length; i++) {
+            ballot.voters[votersList[i]] = Types.Voter(false, true);
+        }
+
+        ballotNames.push(name);
     }
 
-    for (uint256 i = 0; i < votersList.length; i++) {
-        ballot.voters[votersList[i]] = Types.Voter(false, true);
-    }
-}
     function getBallots() public view returns (string[] memory) {
-        string[] memory ballotNames;
-       for (uint256 i = 0; i < ballots.length; i++) {
-            ballotNames[i] = ballots[i].name;
-        }
         return ballotNames;
     }
-   
+
     function vote(string memory ballotName, string memory candidate, address voter) public {
-       Types.Ballot storage ballot;
-            bool found = false;
+        Types.Ballot storage ballot = ballots[ballotName];
+        require(ballot.startTime != 0, "Ballot not found");
+        require(isValidCandidate(ballot, candidate), "Invalid candidate");
+        require(ballot.voters[voter].isEligible, "Voter not eligible");
+        require(!ballot.voters[voter].isVoted, "Voter already voted");
+        require(block.timestamp >= ballot.startTime && block.timestamp <= ballot.endTime, "Voting period has not started or has ended");
 
-            // Iterate over the ballots array
-            for (uint i = 0; i < ballots.length; i++) {
-                // If the ballotName of the current Ballot is equal to the target ballotName
-                if (keccak256(abi.encodePacked(ballots[i].name)) == keccak256(abi.encodePacked(ballotName))) {
-                    // Set the ballot variable to the current Ballot and set found to true
-                    ballot = ballots[i];
-                    found = true;
-                     require(found, "Ballot not found");
-                    require(isValidCandidate(ballot, candidate), "Invalid candidate");
-                    require(ballot.voters[voter].isEligible, "Voter not eligible");
-                    require(!ballot.voters[voter].isVoted, "Voter already voted");
-                    require(block.timestamp >= ballot.startTime && block.timestamp <= ballot.endTime, "Voting period has not started or has ended");
-
-                    ballot.votes[candidate] += 1;
-                    ballot.voters[voter].isVoted = true;
-                    break;
-                }
-            }
-            require(found, "Ballot not found");
-
-       
+        ballot.votes[candidate] += 1;
+        ballot.voters[voter].isVoted = true;
     }
 
-    function getCandidateList(uint256 ballotIndex) public view returns (string[] memory) {
-        require(ballotIndex < ballots.length, "Invalid ballot index");
-        return ballots[ballotIndex].candidates;
+    function getCandidateList(string memory ballotName) public view returns (string[] memory) {
+        // require(ballots[ballotName].startTime != 0, "Invalid ballot name");
+        return ballots[ballotName].candidates;
     }
 
     function getVoteCount(string memory ballotName, string memory candidate) public view returns (uint256 voteCount) {
-       
-
-         Types.Ballot storage ballot;
-            bool found = false;
-
-            // Iterate over the ballots array
-            for (uint i = 0; i < ballots.length; i++) {
-                // If the ballotName of the current Ballot is equal to the target ballotName
-                if (keccak256(abi.encodePacked(ballots[i].name)) == keccak256(abi.encodePacked(ballotName))) {
-                    // Set the ballot variable to the current Ballot and set found to true
-                    ballot = ballots[i];
-                    found = true;
-                    voteCount = ballot.votes[candidate];
-                    return voteCount;
-                }
-            }
-            require(found, "Ballot not found");
+        Types.Ballot storage ballot = ballots[ballotName];
+        require(ballot.startTime != 0, "Ballot not found");
+        voteCount = ballot.votes[candidate];
     }
 
     function isValidCandidate(Types.Ballot storage ballot, string memory candidate) private view returns (bool) {
@@ -101,6 +70,6 @@ contract Voting {
     }
 
     function getBallotCount() public view returns (uint256) {
-        return ballots.length;
+        return ballotNames.length;
     }
 }
